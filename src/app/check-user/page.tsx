@@ -23,7 +23,7 @@ export default function CheckUserPage() {
       const { data, error } = await supabase.auth.admin.listUsers()
       
       if (error) {
-        setMessage(`Error: ${error.message}`)
+        setMessage(`Error: ${error instanceof Error ? error.message : String(error)}`)
         console.error('Admin error:', error)
       } else {
         const user = data.users.find(u => u.email === email)

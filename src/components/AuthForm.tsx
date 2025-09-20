@@ -25,7 +25,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
         : await signUpWithEmail(email, password)
 
       if (error) {
-        toast.error(error.message)
+        toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
       } else {
         if (mode === 'signup') {
           toast.success('Please check your email to confirm your account')

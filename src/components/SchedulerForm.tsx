@@ -54,7 +54,7 @@ export default function SchedulerForm() {
         window.location.reload()
       } else {
         const error = await response.json()
-        toast.error(error.message || 'Failed to schedule quiet hours')
+        toast.error(error instanceof Error ? error.message : 'Failed to schedule quiet hours')
       }
     } catch (error) {
       console.error('Error creating quiet hours:', error)

@@ -53,7 +53,7 @@ export default function TestAuthPage() {
       console.log('Sign up response:', { data, error })
 
       if (error) {
-        setMessage(`Sign up error: ${error.message}`)
+        setMessage(`Sign up error: ${error instanceof Error ? error.message : String(error)}`)
         console.error('Sign up error details:', error)
       } else {
         if (data.user && !data.user.email_confirmed_at) {
@@ -86,7 +86,7 @@ export default function TestAuthPage() {
       console.log('Sign in response:', { data, error })
 
       if (error) {
-        setMessage(`Sign in error: ${error.message}`)
+        setMessage(`Sign in error: ${error instanceof Error ? error.message : String(error)}`)
         console.error('Sign in error details:', error)
       } else {
         setMessage('Signed in successfully!')
@@ -108,7 +108,7 @@ export default function TestAuthPage() {
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut()
     if (error) {
-      setMessage(`Error: ${error.message}`)
+      setMessage(`Error: ${error instanceof Error ? error.message : String(error)}`)
     } else {
       setMessage('Signed out successfully!')
       setUser(null)

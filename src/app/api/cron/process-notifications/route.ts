@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
         results.push({
           notificationId: notification._id,
           status: 'error',
-          error: error.message
+          error: error instanceof Error ? error.message : String(error)
         })
       }
     }
