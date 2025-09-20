@@ -3,9 +3,13 @@ import connectDB from '@/lib/mongodb'
 import QuietHourBlock from '@/lib/models/QuietHourBlock'
 import { getCurrentUser } from '@/lib/auth'
 
+interface RouteParams {
+  params: Promise<{ id: string }>
+}
+
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     await connectDB()
@@ -15,11 +19,12 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const { id } = await params
     const body = await request.json()
     const { isActive } = body
 
     const block = await QuietHourBlock.findOneAndUpdate(
-      { _id: params.id, userId: user.id },
+      { _id: id, userId: user.id },
       { isActive },
       { new: true }
     )
@@ -40,7 +45,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     await connectDB()
@@ -50,8 +55,9 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const { id } = await params
     const block = await QuietHourBlock.findOneAndDelete({
-      _id: params.id,
+      _id: id,
       userId: user.id
     })
 
@@ -66,7 +72,7 @@ export async function DELETE(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        blockId: params.id,
+        blockId: id,
       }),
     })
 
